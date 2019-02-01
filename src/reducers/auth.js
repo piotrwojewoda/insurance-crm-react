@@ -1,11 +1,20 @@
-import {USER_LOGIN_SUCCESS, USER_LOGOUT, USER_PROFILE_RECEIVED, USER_SET_ID} from "../actions/constants";
+import {
+    SET_USER_TOKEN,
+    USER_LOGIN_ERROR,
+    USER_LOGIN_REQUEST,
+    USER_LOGIN_SUCCESS,
+    USER_LOGOUT,
+    USER_PROFILE_RECEIVED,
+    USER_SET_ID
+} from "../actions/constants";
 
 export default (state =
                     {
                         token: null,
                         userId: null,
                         isAuthenticated: false,
-                        userData: null
+                        userData: null,
+                        spinner: false
                     },
                 action) => {
     switch (action.type) {
@@ -14,7 +23,8 @@ export default (state =
                 ...state,
                 token: action.token,
                 userId: action.userId,
-                isAuthenticated: true
+                isAuthenticated: true,
+                spinner: false
             };
         case USER_SET_ID:
             return {
@@ -22,10 +32,16 @@ export default (state =
                 userId: action.userId,
                 isAuthenticated: true
             };
+        case SET_USER_TOKEN:
+            return {
+                ...state,
+                token: action.jwtToken
+            };
         case USER_PROFILE_RECEIVED:
 
             return {
                 ...state,
+                spinner: false,
                 userData: (state.userId === action.userId && state.userData === null)
                     ? action.userData : state.userData,
                 isAuthenticated: (state.userId === action.userId && state.userData === null)
@@ -34,12 +50,24 @@ export default (state =
         case USER_LOGOUT:
             return {
                 ...state,
+                spinner: false,
                 token: null,
                 userId: null,
                 isAuthenticated: false,
                 userData: null
             };
+        case USER_LOGIN_REQUEST:
+            return {
+                ...state,
+                spinner: true
 
+            }
+        case USER_LOGIN_ERROR:
+            return {
+                ...state,
+                spinner: false
+
+            }
         default:
             return state;
     }

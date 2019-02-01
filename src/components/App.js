@@ -3,30 +3,53 @@ import '../App.css';
 import HeaderContainer from "./header/HeaderContainer";
 import {Route, Switch} from 'react-router';
 import DashboardContainer from "./dashboard/DashboardContainer";
-import {withRouter} from "react-router-dom";
 import PoliciesContainer from "./policies/PoliciesContainer";
 import { connect } from "react-redux";
+import LoginForm from "./LoginForm";
+import { withRouter } from "react-router-dom";
+import { requests } from "../agent";
+import {logout, userProfileFetch, userSetId, userSetToken} from "../actions/actions";
 
 const mapStateToProps = state => ( { ...state.auth });
 
+const mapDispatchToProps = {
+    userProfileFetch, userSetId, userSetToken, logout
+}
+
 class App extends Component {
 
-  render() {
+    constructor(props) {
+        super(props);
+        const token = window.localStorage.getItem('jwtToken');
+        if (token) {
+            requests.setToken(token);
+        }
+    }
+
+    componentDidMount() {
+        const userId = window.localStorage.getItem('userId');
+        const token = window.localStorage.getItem('jwtToken');
+        const {userSetId,userSetToken} = this.props;
+        if (userId && token) {
+            userSetId(userId);
+            userSetToken(token);
+        }
+    }
+
+    render() {
+      const {isAuthenticated, userData, logout} = this.props;
     return (
             <div className="container-fluid">
-                <HeaderContainer/>
-                {/*<Header isAuthenticated={isAuthenticated} userData={userData} logout={userLogout} />*/}
+                <HeaderContainer  isAuthenticated={isAuthenticated} logout={logout} userData={userData}/>
+
                 <Switch>
+                    <Route path="/login" component={withRouter(LoginForm)} />
                     <Route path="/policies"  component={PoliciesContainer} />
                     <Route path="/" component={DashboardContainer} />
-
-                    {/*<Route path="/blog-post/:id" component={BlogPostContainer}  />*/}
-                    {/*<Route path="/register" component={RegistrationContainer} />*/}
-                    {/*<Route path="/:page?" component={BlogPostListContainer} />*/}
                 </Switch>
             </div>
     );
   }
 }
 
-export default connect(mapStateToProps,null)(App);
+export default connect(mapStateToProps,mapDispatchToProps)(App);
