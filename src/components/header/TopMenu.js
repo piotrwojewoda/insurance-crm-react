@@ -26,10 +26,10 @@ class TopMenu extends Component {
         const {isAuthenticated,activeItem,navTabChange,pathname} = this.props;
         const items = [
             {pathname: '/', label: 'Dashboard', icon: 'pi pi-fw pi-home', command: () => { this.navigateToPage('/' )}   },
-            {pathname: '/insurance-values' ,label: 'Insurance Values', icon: 'pi pi-fw pi-calendar'},
-            {pathname: '/policies', label: 'Policies', icon: 'pi pi-fw pi-pencil' ,  command: () => { this.navigateToPage('/policies' )} },
-            {pathname: '/companies', label: 'Companies', icon: 'pi pi-fw pi-file'},
-            {pathname: '/clients', label: 'Clients', icon: 'pi pi-fw pi-cog'}
+            {pathname: '/insurance-values' ,label: 'Insurance Values', icon: 'pi pi-fw pi-money-bill'},
+            {pathname: '/policies', label: 'Policies', icon: 'pi pi-fw pi-plus-circle' ,  command: () => { this.navigateToPage('/policies' )} },
+            {pathname: '/companies', label: 'Companies', icon: 'pi pi-fw pi-globe'},
+            {pathname: '/clients', label: 'Clients', icon: 'pi pi-fw pi-users'}
         ];
 
         let currentItem = activeItem == null && (pathname !== '/' || pathname !== '/login') ?

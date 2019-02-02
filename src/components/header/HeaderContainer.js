@@ -15,7 +15,7 @@ class HeaderContainer extends Component {
                     <span className="navbar-brand" >InsuranceCRM</span>
                     <ul className="navbar-nav ml-auto">
                         { isAuthenticated && (<li className="nav-item">
-                            <span className="nav-link" onClick={ logout }>Logout</span>
+                            <span className="nav-link App-pointer" onClick={ logout }>Logout</span>
                         </li>) }
                     </ul>
                 </nav>

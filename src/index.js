@@ -7,6 +7,7 @@ import App from "./components/App";
 import 'primereact/resources/themes/nova-light/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
+import './primeflex.css';
 import configureStore, { history } from './configureStore'
 
 const store = configureStore();
