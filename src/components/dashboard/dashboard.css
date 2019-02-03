@@ -16,3 +16,34 @@ body .p-datatable .p-datatable-tbody > tr > td {
     padding: 0.2em !important;
     font-size: 0.8em;
 }
+
+body .p-panel .p-panel-titlebar .p-panel-title {
+    padding: 0.1em !important;
+    font-size: 1em;
+    font-weight: bold !important;
+}
+.p-panel .p-panel-titlebar {
+    padding: .2em .5em !important;
+
+}
+
+.p-datatable .p-datatable-loading-icon{
+    font-size: 0 !important;
+}
+body .p-datatable .p-datatable-tbody > tr {
+    height:  5px !important;
+    max-height:  5px !important;
+}
+
+body .p-paginator .p-paginator-pages .p-paginator-page{
+    font-size: 10px !important;
+}
+
+body .p-paginator .p-paginator-first, body .p-paginator .p-paginator-prev, body .p-paginator .p-paginator-next, body .p-paginator .p-paginator-last{
+    height: 1.5em !important;
+}
+table  {
+    min-height: 30vh;
+}
+
+

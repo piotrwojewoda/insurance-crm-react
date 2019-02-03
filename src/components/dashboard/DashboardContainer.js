@@ -4,7 +4,8 @@ import {navChangePage} from "../../actions/actions";
 import Policies from "./policies";
 import Clients from "./clients";
 import './dashboard.css';
-import {dashboardLoadPolicies} from "../../actions/actionsDashboard";
+import {dashboardLoadPolicies, dashboardSelectPolicy} from "../../actions/actionsDashboard";
+import RightpanelContainer from "./rightpanelContainer";
 
 
 const mapStateToProps = state => ({
@@ -14,7 +15,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
     navChangePage,
-    dashboardLoadPolicies
+    dashboardLoadPolicies,
+    dashboardSelectPolicy
 };
 
 class DashboardContainer extends Component {
@@ -29,15 +31,30 @@ class DashboardContainer extends Component {
 
     render() {
 
-        const {dashboardLoadPolicies} =  this.props;
+        const {dashboardLoadPolicies,dashboardSelectPolicy} =  this.props;
 
         return (
             <div className="mt-1">
                 <div className="p-grid">
-                    <div className="p-col-6"><Policies dashboardLoadPolicies={dashboardLoadPolicies} policies={this.props.policies}/></div>
-                    <div className="p-col-6">fff</div>
-                    <div className="p-col-6"><Clients/></div>
-
+                    <div className="p-col-4">
+                        <div className="p-grid">
+                            <div className="p-col-12">
+                                <Policies dashboardLoadPolicies={dashboardLoadPolicies}
+                                          policies={this.props.policies}
+                                          policiesLoading={this.props.policiesLoading}
+                                          policiesAmount={this.props.policiesAmount}
+                                          selectedPolicy={this.props.selectedPolicy}
+                                          onSelectPolicy={dashboardSelectPolicy}
+                                />
+                            </div>
+                            <div className="p-col-12">
+                                <Clients clients={this.props.clients} clientsLoading={this.props.clientsLoading}/>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="p-col-8">
+                        <RightpanelContainer/>
+                    </div>
                 </div>
             </div>
         );

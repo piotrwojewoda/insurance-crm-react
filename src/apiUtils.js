@@ -20,6 +20,13 @@ export const hydraPageCount = (collection) => {
 }
 
 
+export const uriId = (uri) => {
+    return Number(
+        uri.value['@id'].match(/(\d+)/)[1]
+    )
+    };
+
+
 const canWriteBlogPostRoles = ['ROLE_WRITER', 'ROLE_ADMIN', 'ROLE_SUPERADMIN'];
 
 export const canWriteBlogPost = (userData) => {
