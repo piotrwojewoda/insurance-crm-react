@@ -3,7 +3,7 @@ import {
     DASHBOARD_LOAD_POLICIES_REQUEST,
     DASHBOARD_LOAD_POLICY_ITEM_RECEIVED,
     DASHBOARD_LOAD_POLICY_ITEM_REQUEST,
-    DASHBOARD_SELECT_POLICY
+    DASHBOARD_SELECT_POLICY, DASHBOARD_SET_POLICIES_FIRST_PAGE
 } from "./constants";
 import {requests} from "../agent";
 import {uriId} from "../apiUtils";
@@ -50,11 +50,11 @@ export const dashboardPoliciesReceived = (data) => {
     }
 }
 
-export const dashboardLoadPolicies = () => {
+export const dashboardLoadPolicies = (page = 1) => {
 
     return (dispatch) => {
         dispatch(dashboardPoliciesRequest());
-        return requests.get('/policies',true).then(
+        return requests.get(`/policies?_page=${page}`,true).then(
             response => dispatch(dashboardPoliciesReceived(response))
         ).catch(error => console.log(error));
     }
@@ -71,4 +71,13 @@ export const dashboardPutPolicyAsSelected = (policy) => {
         type: DASHBOARD_SELECT_POLICY,
         policy
     }
+}
+
+
+export const dashboardSetPoliciesFirstPage = (page) => {
+    return {
+        type: DASHBOARD_SET_POLICIES_FIRST_PAGE,
+        policiesFirstPage: page
+    }
+
 }

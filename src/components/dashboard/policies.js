@@ -12,9 +12,14 @@ class Policies extends Component {
         this.props.dashboardLoadPolicies();
     }
 
+    onPage = (e) => {
+        this.props.dashboardLoadPolicies(e.page+1);
+        this.props.setPoliciesFirstPage(e.first);
+    };
+
     render() {
         const { policies } = this.props;
-        const { policiesLoading,policiesAmount,selectedPolicy,onSelectPolicy} = this.props;
+        const { policiesLoading,policiesAmount,selectedPolicy,onSelectPolicy,policiesFirst} = this.props;
         let selectedItem = selectedPolicy === null ? null : policies.find( e => e['@id'] === selectedPolicy['@id']);
         return (
             <div style={{ position: 'relative'}}>
@@ -32,7 +37,7 @@ class Policies extends Component {
                            lazy={true}
                            totalRecords={policiesAmount}
                            header="Policies"
-                           first={1}
+                           first={policiesFirst}
                            rows={10}
                            loading={policiesLoading}
                            selectionMode="single"
@@ -40,6 +45,8 @@ class Policies extends Component {
                            selection={selectedItem}
                            paginator={true}
                            onSelectionChange={e => onSelectPolicy(e) }
+                           onPage={this.onPage}
+
                 >
                     <Column field="code" header="Code"  />
                     <Column field="startdate" header="Start Date"/>

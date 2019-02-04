@@ -47,3 +47,6 @@ table  {
 }
 
 
+.p-datatable-wrapper {
+    min-height:  30vh !important;
+}

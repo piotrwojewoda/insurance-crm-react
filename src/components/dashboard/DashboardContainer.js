@@ -4,7 +4,11 @@ import {navChangePage} from "../../actions/actions";
 import Policies from "./policies";
 import Clients from "./clients";
 import './dashboard.css';
-import {dashboardLoadPolicies, dashboardSelectPolicy} from "../../actions/actionsDashboard";
+import {
+    dashboardLoadPolicies,
+    dashboardSelectPolicy,
+    dashboardSetPoliciesFirstPage
+} from "../../actions/actionsDashboard";
 import RightpanelContainer from "./rightpanelContainer";
 
 
@@ -16,7 +20,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
     navChangePage,
     dashboardLoadPolicies,
-    dashboardSelectPolicy
+    dashboardSelectPolicy,
+    dashboardSetPoliciesFirstPage
 };
 
 class DashboardContainer extends Component {
@@ -29,33 +34,36 @@ class DashboardContainer extends Component {
         }
     }
 
+
+
+
     render() {
 
         const {dashboardLoadPolicies,dashboardSelectPolicy} =  this.props;
 
         return (
-            <div className="mt-1">
-                <div className="p-grid">
-                    <div className="p-col-4">
-                        <div className="p-grid">
-                            <div className="p-col-12">
+                <div className="row mt-2">
+                    <div className="col-md-4">
+                        <div className="row">
+                            <div className="col-md-12">
                                 <Policies dashboardLoadPolicies={dashboardLoadPolicies}
                                           policies={this.props.policies}
                                           policiesLoading={this.props.policiesLoading}
                                           policiesAmount={this.props.policiesAmount}
                                           selectedPolicy={this.props.selectedPolicy}
+                                          setPoliciesFirstPage={this.props.dashboardSetPoliciesFirstPage}
+                                          policiesFirst={this.props.policiesFirstPage}
                                           onSelectPolicy={dashboardSelectPolicy}
                                 />
                             </div>
-                            <div className="p-col-12">
+                            <div className="col-md-12 mt-1">
                                 <Clients clients={this.props.clients} clientsLoading={this.props.clientsLoading}/>
                             </div>
                         </div>
                     </div>
-                    <div className="p-col-8">
+                    <div className="col-md-8">
                         <RightpanelContainer/>
                     </div>
-                </div>
             </div>
         );
     }

@@ -24,7 +24,7 @@ class Clients extends Component {
                            header="Clients"
                            first={1}
                            rows={6}
-                           loading={true}
+                           loading={clientsLoading}
                            emptyMessage=""
                 >
                     <Column field="idnumber" header="Pesel"></Column>
