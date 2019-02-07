@@ -9,6 +9,7 @@ class Policies extends Component {
     constructor(props) {
         super(props);
         this.props.dashboardLoadPolicies();
+        this.props.setPoliciesFirstPage(1);
     }
 
     onPage = (e) => {
