@@ -5,10 +5,10 @@ import {ProgressSpinner} from "primereact/progressspinner";
 
 class Clients extends Component {
     render() {
-        const { clients,clientsAmount , clientsLoading } = this.props;
+        const {clients, clientsAmount, clientsLoading, dashboardSelectClient, selectedClient} = this.props;
         return (
-            <div style={{ position: 'relative'}}>
-                { clientsLoading && (<ProgressSpinner style={{
+            <div style={{position: 'relative'}}>
+                {clientsLoading && (<ProgressSpinner style={{
                     width: '100px',
                     height: '100px',
                     zIndex: '99999',
@@ -17,7 +17,7 @@ class Clients extends Component {
                     top: '55%',
                     transform: 'translate(-50%, -50%)'
 
-                }} strokeWidth="5"  animationDuration=".8s"/>) }
+                }} strokeWidth="5" animationDuration=".8s"/>)}
                 <DataTable value={clients}
                            lazy={true}
                            totalRecords={clientsAmount}
@@ -26,6 +26,9 @@ class Clients extends Component {
                            rows={6}
                            loading={clientsLoading}
                            emptyMessage=""
+                           selectionMode="single"
+                           selection={selectedClient}
+                           onSelectionChange={e => dashboardSelectClient(e)}
                 >
                     <Column field="idnumber" header="Pesel"></Column>
                     <Column field="firstname" header="Firstname"></Column>

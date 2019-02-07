@@ -5,11 +5,12 @@ import Policies from "./policies";
 import Clients from "./clients";
 import './dashboard.css';
 import {
-    dashboardLoadPolicies,
+    dashboardLoadPolicies, dashboardSelectClient,
     dashboardSelectPolicy,
     dashboardSetPoliciesFirstPage
 } from "../../actions/actionsDashboard";
 import RightpanelContainer from "./rightpanelContainer";
+
 
 
 const mapStateToProps = state => ({
@@ -21,7 +22,8 @@ const mapDispatchToProps = {
     navChangePage,
     dashboardLoadPolicies,
     dashboardSelectPolicy,
-    dashboardSetPoliciesFirstPage
+    dashboardSetPoliciesFirstPage,
+    dashboardSelectClient
 };
 
 class DashboardContainer extends Component {
@@ -34,12 +36,9 @@ class DashboardContainer extends Component {
         }
     }
 
-
-
-
     render() {
 
-        const {dashboardLoadPolicies,dashboardSelectPolicy} =  this.props;
+        const {dashboardLoadPolicies,dashboardSelectPolicy,dashboardSelectClient ,selectedClient ,clients} =  this.props;
 
         return (
                 <div className="row mt-2">
@@ -57,7 +56,11 @@ class DashboardContainer extends Component {
                                 />
                             </div>
                             <div className="col-md-12 mt-1">
-                                <Clients clients={this.props.clients} clientsLoading={this.props.clientsLoading}/>
+                                <Clients clients={clients}
+                                         clientsLoading={this.props.clientsLoading}
+                                         dashboardSelectClient={dashboardSelectClient}
+                                         selectedClient={clients.find( element => element && selectedClient && element['@id'] === selectedClient['@id']) }
+                                />
                             </div>
                         </div>
                     </div>

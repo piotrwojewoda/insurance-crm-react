@@ -1,22 +1,28 @@
- import React from 'react';
- import Moment from 'react-moment';
- import 'moment-timezone';
+import React from 'react';
+import Moment from 'react-moment';
+import 'moment-timezone';
 import {
+    DASHBOARD_LOAD_CLIENT_RECEIVED, DASHBOARD_LOAD_CLIENT_REQUEST,
     DASHBOARD_LOAD_POLICIES_RECEIVED,
-    DASHBOARD_LOAD_POLICIES_REQUEST, DASHBOARD_LOAD_POLICY_ITEM_RECEIVED, DASHBOARD_LOAD_POLICY_ITEM_REQUEST,
-    DASHBOARD_SELECT_POLICY, DASHBOARD_SET_POLICIES_FIRST_PAGE
+    DASHBOARD_LOAD_POLICIES_REQUEST,
+    DASHBOARD_LOAD_POLICY_ITEM_RECEIVED,
+    DASHBOARD_LOAD_POLICY_ITEM_REQUEST,
+    DASHBOARD_SELECT_POLICY,
+    DASHBOARD_SET_POLICIES_FIRST_PAGE
 } from "../actions/constants";
 
 export default (state =
                     {
-                       policies: [],
+                        policies: [],
                         clients: [],
                         selectedPolicy: null,
                         selectedClient: null,
                         policiesLoading: false,
                         policiesFirstPage: 1,
                         clientsLoading: false,
-                        policiesAmount: 0
+                        policiesAmount: 0,
+                        clientInsuranceValue: [],
+                        policyInsuranceDetails: false
                     },
                 action) => {
     switch (action.type) {
@@ -29,7 +35,7 @@ export default (state =
                         e.enddate = (<Moment format="Y-MM-DD">{e.enddate}</Moment>);
                         return e;
                     }
-                    ),
+                ),
                 policiesAmount: action.data['hydra:totalItems'],
                 policiesLoading: false
             };
@@ -37,12 +43,16 @@ export default (state =
             return {
                 ...state,
                 policiesLoading: true,
-                selectedPolicy: null
+                selectedPolicy: null,
+                policyInsuranceDetails: false,
+                clients: [],
+                selectedClient: null
             };
         case DASHBOARD_SELECT_POLICY:
             return {
                 ...state,
-                selectedPolicy: action.policy.value
+                selectedPolicy: action.policy.value,
+                selectedClient: null
             };
         case DASHBOARD_LOAD_POLICY_ITEM_REQUEST:
             return {
@@ -54,7 +64,7 @@ export default (state =
             return {
                 ...state,
                 clientsLoading: false,
-                clients: action.data.clients.map( (e) => {
+                clients: action.data.clients.map((e) => {
                     e.birthdate = (<Moment format="Y-MM-DD">{e.birthdate}</Moment>)
                     return e;
                 }),
@@ -64,7 +74,20 @@ export default (state =
             return {
                 ...state,
                 policiesFirstPage: action.policiesFirstPage
+            };
+        case DASHBOARD_LOAD_CLIENT_REQUEST:
+            return {
+                ...state,
+                clientInsuranceValue: [],
+                policyInsuranceDetails: true
             }
+        case DASHBOARD_LOAD_CLIENT_RECEIVED:
+            return {
+                ...state,
+                clientInsuranceValue: action.data.value,
+                selectedClient: action.data,
+                policyInsuranceDetails: false
+            };
 
         default:
             return state;
