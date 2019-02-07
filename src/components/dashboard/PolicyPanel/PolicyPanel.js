@@ -3,7 +3,7 @@ import {Panel} from "primereact/panel";
 import InsuranceTable from "./InsuranceTable";
 import {connect} from "react-redux";
 import {ProgressSpinner} from "primereact/progressspinner";
-
+import './PolicyPanel.css';
 const mapStateToProps = state => ({
     ...state.dashboard,
     insurance: state.insurance
@@ -29,7 +29,7 @@ class PolicyPanel extends Component {
                         transform: 'translate(-50%, -50%)'
 
                     }} strokeWidth="5"  animationDuration=".8s"/>) }
-                <Panel header="Policy insurance details" className="mt-1 text-center">
+                <Panel header="Policy insurance details" className="mt-1 text-center policyPanelHeight">
                     { selectedClient  && clientInsuranceValue  ? (
                         <InsuranceTable
                             insuranceTypes={insuranceTypes}

@@ -22,9 +22,7 @@ class RightpanelContainer extends Component {
             newClientDialogVisible: false
         };
     }
-
     render() {
-
         const { selectedPolicy, selectedClient,clientsLoading,policyInsuranceDetails} = this.props;
 
         return (

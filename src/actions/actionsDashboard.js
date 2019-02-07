@@ -5,10 +5,11 @@ import {
     DASHBOARD_LOAD_POLICIES_REQUEST,
     DASHBOARD_LOAD_POLICY_ITEM_RECEIVED,
     DASHBOARD_LOAD_POLICY_ITEM_REQUEST, DASHBOARD_SELECT_CLIENT,
-    DASHBOARD_SELECT_POLICY, DASHBOARD_SET_POLICIES_FIRST_PAGE
+    DASHBOARD_SELECT_POLICY, DASHBOARD_SET_POLICIES_FIRST_PAGE, RESET_DASHBOARD_DATA
 } from "./constants";
 import {requests} from "../agent";
 import {uriId} from "../apiUtils";
+import {navChangePage, userLogout} from "./actions";
 
 
 
@@ -32,7 +33,14 @@ export const dashboardLoadPolicies = (page = 1) => {      // wykonuje reπuest p
         dispatch(dashboardPoliciesRequest());
         return requests.get(`/policies?_page=${page}`,true).then(
             response => dispatch(dashboardPoliciesReceived(response))
-        ).catch(error => console.log(error));
+        ).catch(error => {
+            if (401 === error.response.status) {
+                dispatch(dashboardResetData());
+                dispatch(userLogout());
+                return dispatch(navChangePage('/login'));
+            }
+
+        });
     }
 };
 
@@ -53,7 +61,13 @@ export const dashboardLoadPolicyItem = (id) => {
         dispatch(dashboardLoadPolicyItemRequest(id));
         return requests.get(`/policies/${id}`,true).then(
             response => dispatch(dashboardLoadPolicyItemReceived(response))
-        ).catch(error => console.log(error));
+        ).catch(error => {
+            if (401 === error.response.status) {
+                dispatch(dashboardResetData());
+                dispatch(userLogout());
+              return dispatch(navChangePage('/login'));
+            }
+        });
     }
 };
 export const dashboardLoadPolicyItemRequest = () => {
@@ -63,9 +77,6 @@ export const dashboardLoadPolicyItemRequest = () => {
 };
 
 export const dashboardLoadPolicyItemReceived = (data) => {
-
-    // console.log('datta',data);
-
     return {
         type: DASHBOARD_LOAD_POLICY_ITEM_RECEIVED,
         data
@@ -89,7 +100,6 @@ export const dashboardPutClientAsSelected = (client) => {
 
 export const dashboardSelectClient = (client) => (dispatch) => {
     dispatch(dashboardLoadClient(client));
-   // dispatch(dashboardPutClientAsSelected(client));
 };
 
 
@@ -110,6 +120,18 @@ export const dashboardLoadClient = (client) => (dispatch) => {
         dispatch(dashboardLoadClientRequest());
         return requests.get(`/clients/${uriId(client)}`,true).then(
             response => dispatch(dashboardLoadClientReceived(response))
-        ).catch(error => console.log(error));
-
+        ).catch(error => {
+            if (401 === error.response.status) {
+                dispatch(dashboardResetData());
+                dispatch(userLogout());
+                return dispatch(navChangePage('/login'));
+            }
+        });
 };
+
+
+export const dashboardResetData = () => {
+    return {
+        type: RESET_DASHBOARD_DATA
+    }
+}

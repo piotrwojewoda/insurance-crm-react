@@ -1,4 +1,5 @@
 import {
+    RESET_ALL_DATA,
     SET_USER_TOKEN,
     USER_LOGIN_ERROR,
     USER_LOGIN_REQUEST,
@@ -66,8 +67,7 @@ export default (state =
             return {
                 ...state,
                 spinner: false
-
-            }
+            };
         default:
             return state;
     }

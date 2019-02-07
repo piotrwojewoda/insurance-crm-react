@@ -8,22 +8,23 @@ import {
     DASHBOARD_LOAD_POLICY_ITEM_RECEIVED,
     DASHBOARD_LOAD_POLICY_ITEM_REQUEST,
     DASHBOARD_SELECT_POLICY,
-    DASHBOARD_SET_POLICIES_FIRST_PAGE
+    DASHBOARD_SET_POLICIES_FIRST_PAGE, RESET_ALL_DATA, RESET_DASHBOARD_DATA
 } from "../actions/constants";
 
+
+const initialState = {  policies: [],
+    clients: [],
+    selectedPolicy: null,
+    selectedClient: null,
+    policiesLoading: false,
+    policiesFirstPage: 1,
+    clientsLoading: false,
+    policiesAmount: 0,
+    clientInsuranceValue: [],
+    policyInsuranceDetails: false};
+
 export default (state =
-                    {
-                        policies: [],
-                        clients: [],
-                        selectedPolicy: null,
-                        selectedClient: null,
-                        policiesLoading: false,
-                        policiesFirstPage: 1,
-                        clientsLoading: false,
-                        policiesAmount: 0,
-                        clientInsuranceValue: [],
-                        policyInsuranceDetails: false
-                    },
+                    {...initialState},
                 action) => {
     switch (action.type) {
         case DASHBOARD_LOAD_POLICIES_RECEIVED:
@@ -88,7 +89,8 @@ export default (state =
                 selectedClient: action.data,
                 policyInsuranceDetails: false
             };
-
+        case RESET_DASHBOARD_DATA:
+            return initialState;
         default:
             return state;
     }
