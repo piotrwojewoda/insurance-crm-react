@@ -4,8 +4,13 @@ import {
     DASHBOARD_LOAD_POLICIES_RECEIVED,
     DASHBOARD_LOAD_POLICIES_REQUEST,
     DASHBOARD_LOAD_POLICY_ITEM_RECEIVED,
-    DASHBOARD_LOAD_POLICY_ITEM_REQUEST, DASHBOARD_SELECT_CLIENT,
-    DASHBOARD_SELECT_POLICY, DASHBOARD_SET_POLICIES_FIRST_PAGE, RESET_DASHBOARD_DATA
+    DASHBOARD_LOAD_POLICY_ITEM_REQUEST,
+    DASHBOARD_SELECT_CLIENT,
+    DASHBOARD_SELECT_POLICY,
+    DASHBOARD_SET_POLICIES_FIRST_PAGE,
+    REMOVE_SELECTED_CLIENT,
+    RESET_DASHBOARD_DATA,
+    SELECTED_CLIENT_HAS_BEEN_REMOVED
 } from "./constants";
 import {requests} from "../agent";
 import {uriId} from "../apiUtils";
@@ -45,6 +50,10 @@ export const dashboardLoadPolicies = (page = 1) => {      // wykonuje reπuest p
 };
 
 export const dashboardSelectPolicy = (policy) => (dispatch) => {
+
+
+    console.log('policy!!!',policy);
+
    dispatch(dashboardPutPolicyAsSelected(policy));
    dispatch(dashboardLoadPolicyItem(uriId(policy)));
 };
@@ -129,9 +138,33 @@ export const dashboardLoadClient = (client) => (dispatch) => {
         });
 };
 
-
 export const dashboardResetData = () => {
     return {
         type: RESET_DASHBOARD_DATA
     }
-}
+};
+
+
+
+export const removeSelectedClient = () => {
+    return {
+        type: REMOVE_SELECTED_CLIENT
+    }
+};
+
+export const selectedClientHasBeenRemoved = () => {
+    return {
+        type: SELECTED_CLIENT_HAS_BEEN_REMOVED
+    }
+};
+
+export const startRemoveSelectedClient = (client) => (dispatch) => {
+        dispatch(removeSelectedClient);
+        console.log('client',client);
+        return requests.delete(`/clients/${client.id}`,true).then(
+            response => {
+                dispatch(selectedClientHasBeenRemoved);
+            }
+        ).catch( err => console.log(err));
+
+};

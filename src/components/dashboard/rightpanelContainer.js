@@ -7,26 +7,72 @@ import {Dialog} from "primereact/dialog";
 import NewPolicyDialog from "./NewPolicyDialog/NewPolicyDialog";
 import NewClientDialog from "./NewClientDialog/NewClientDialog";
 import {connect} from "react-redux";
+import {Growl} from 'primereact/growl';
+
+import {
+    startRemoveSelectedClient,
+    dashboardSelectPolicy
+} from "../../actions/actionsDashboard";
 
 const mapStateToProps = state => ({
     ...state.dashboard,
     isAuthenticated: state.auth.isAuthenticated
 });
-
-class RightpanelContainer extends Component {
+const mapDispatchToProps = {
+    startRemoveSelectedClient,
+    dashboardSelectPolicy
+};
+class RightpanelContainer extends Component { // TODO split component to smaller components
 
     constructor(props) {
         super(props);
         this.state = {
             newPolicyDialogVisible: false,
-            newClientDialogVisible: false
+            newClientDialogVisible: false,
+            removeClientDialogVisible: false,
+            removePolicyDialogVisible: false
         };
     }
+
+    onClickRemoveSelectedPolicy = (event)  => {
+
+        this.setState({removePolicyDialogVisible: false});
+    };
+
+    onHideRemovePolicyDialog = (event) => {
+        this.setState({removeClientDialogVisible: false});
+    };
+
+    onClickRemoveSelectedClient = (event)  => {         // TODO handle if delete operation was failed;
+        this.props.startRemoveSelectedClient(this.props.selectedClient);
+        this.props.dashboardSelectPolicy({ value: this.props.selectedPolicy });
+        this.setState({removeClientDialogVisible: false});
+        this.growl.show({severity: 'success', summary: 'Client has been removed'});
+    };
+
+    onHideRemoveClientDialog = (event) => {
+        this.setState({removeClientDialogVisible: false});
+    };
+
     render() {
-        const { selectedPolicy, selectedClient,clientsLoading,policyInsuranceDetails} = this.props;
+        const removeClientFooter = (
+            <div>
+                <Button label="Yes" icon="pi pi-check" onClick={this.onClickRemoveSelectedClient} />
+                <Button label="No" icon="pi pi-times" onClick={this.onHideRemoveClientDialog} className="p-button-secondary" />
+            </div>
+        );
+        const removePolicyFooter = (
+            <div>
+                <Button label="Yes" icon="pi pi-check" onClick={this.onClickRemoveSelectedPolicy} />
+                <Button label="No" icon="pi pi-times" onClick={this.onHideRemovePolicyDialog} className="p-button-secondary" />
+            </div>
+        );
+
+        const { selectedPolicy, selectedClient, clientsLoading, policyInsuranceDetails} = this.props;
 
         return (
             <div>
+                <Growl ref={(el) => this.growl = el}></Growl>
                 <Toolbar>
                     <div className="p-toolbar-group-right">
                         <Button label="Add a newpolicy"
@@ -38,20 +84,20 @@ class RightpanelContainer extends Component {
                                 className="p-button-danger"
                                 icon="pi pi-plus"
                                 style={{marginRight: '.25em'}}
-                                onClick={() => this.setState({newClientDialogVisible: true})}
+                                onClick={() => this.setState({removePolicyDialogVisible: true})}
                                                      disabled={clientsLoading === true ? 'disabled' : ''}
                         />) }
-                        <Button label="Add a new client"
+                        { selectedPolicy && (<Button label="Add a new client"
                                 className="p-button-success"
                                 icon="pi pi-plus"
                                 style={{marginRight: '.25em'}}
                                 onClick={() => this.setState({newClientDialogVisible: true})}
-                        />
+                        /> )}
                         { selectedClient && (<Button label="Remove selected client"
                                 className="p-button-danger"
                                 icon="pi pi-plus"
                                 style={{marginRight: '.25em'}}
-                                onClick={() => this.setState({newClientDialogVisible: true})}
+                                onClick={() => this.setState({removeClientDialogVisible: true})}
                                                      disabled={policyInsuranceDetails === true ? 'disabled' : ''}
                         />) }
                     </div>
@@ -76,9 +122,29 @@ class RightpanelContainer extends Component {
                     <NewClientDialog/>
                 </Dialog>
 
+                <Dialog header="Remove client"
+                        visible={this.state.removeClientDialogVisible}
+                        style={{width: '40vw'}}
+                        modal={true}
+                        onHide={() => this.setState({removeClientDialogVisible: false})}
+                        footer={ removeClientFooter }
+                >
+                    Are you sure you want to remove selected Client?
+                </Dialog>
+                <Dialog header="Remove policy"
+                        visible={this.state.removePolicyDialogVisible}
+                        style={{width: '40vw'}}
+                        modal={true}
+                        onHide={() => this.setState({removePolicyDialogVisible: false})}
+                        footer={ removePolicyFooter }
+                >
+                    Are you sure you want to remove selected Policy?
+                </Dialog>
+
+
             </div>
         );
     }
 }
 
-export default connect(mapStateToProps,null)(RightpanelContainer);
+export default connect(mapStateToProps,mapDispatchToProps)(RightpanelContainer);

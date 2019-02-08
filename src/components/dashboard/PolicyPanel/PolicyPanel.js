@@ -8,12 +8,8 @@ const mapStateToProps = state => ({
     ...state.dashboard,
     insurance: state.insurance
 });
-
 class PolicyPanel extends Component {
-
-
     render() {
-
         const { insuranceTypes,insuranceCategories } = this.props.insurance;
         const { clientInsuranceValue,policyInsuranceDetails } = this.props;
         const {selectedClient} = this.props;
@@ -27,7 +23,6 @@ class PolicyPanel extends Component {
                         left: '50%',
                         top: '55%',
                         transform: 'translate(-50%, -50%)'
-
                     }} strokeWidth="5"  animationDuration=".8s"/>) }
                 <Panel header="Policy insurance details" className="mt-1 text-center policyPanelHeight">
                     { selectedClient  && clientInsuranceValue  ? (
@@ -37,7 +32,11 @@ class PolicyPanel extends Component {
                             clientInsuranceValue={ clientInsuranceValue }
                         />
                         )
-                        : " Please select company and client from left lists" }
+                        : (
+                            <div>
+                                <i className="pi pi-chevron-left align-middle"></i>
+                                <span> Please select company and client from left lists </span>
+                            </div>) }
                 </Panel>
             </div>
         );
