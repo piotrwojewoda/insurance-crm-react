@@ -8,16 +8,14 @@ import {
     DASHBOARD_SELECT_CLIENT,
     DASHBOARD_SELECT_POLICY,
     DASHBOARD_SET_POLICIES_FIRST_PAGE,
-    REMOVE_SELECTED_CLIENT,
+    REMOVE_SELECTED_CLIENT, REMOVE_SELECTED_CLIENT_ERROR, REMOVE_SELECTED_POLICY, REMOVING_POLICY_ERROR,
     RESET_DASHBOARD_DATA,
-    SELECTED_CLIENT_HAS_BEEN_REMOVED
+    SELECTED_CLIENT_HAS_BEEN_REMOVED,
+    SELECTED_POLICY_HAS_BEEN_REMOVED, SHOWING_GROWL_HAS_BEEN_REMOVED, SHOWING_GROWL_HAS_NOT_BEEN_REMOVED
 } from "./constants";
 import {requests} from "../agent";
-import {uriId} from "../apiUtils";
-import {navChangePage, userLogout} from "./actions";
-
-
-
+import {apiObjectId, parseApiErrors, parseApiOperationErrors, uriId} from "../apiUtils";
+import {navChangePage, showGrowl, userLogout} from "./actions";
 
 export const dashboardPoliciesRequest = () => {
     return {
@@ -144,27 +142,94 @@ export const dashboardResetData = () => {
     }
 };
 
-
-
 export const removeSelectedClient = () => {
     return {
         type: REMOVE_SELECTED_CLIENT
     }
 };
 
-export const selectedClientHasBeenRemoved = () => {
+
+export const startRemoveSelectedClient = (client) => (dispatch) => {
+    dispatch(removeSelectedClient());
+    console.log('client', client);
+    return requests.delete(`/clients/${client.id}`, true).then(
+        response => {
+            dispatch(showGrowl({
+                life: 2000,
+                severity: 'success',
+                summary: 'Selected client has been removed with success',
+                detail: ''
+            }));
+            dispatch(
+                (
+                    () => {
+                        return {
+                            type: SELECTED_CLIENT_HAS_BEEN_REMOVED
+                        }
+                    }
+                )()
+            );
+        }
+    ).catch((error) => {
+        dispatch(showGrowl({
+            life: 2000,
+            severity: 'error',
+            summary: 'Client has not been removed',
+            detail: parseApiOperationErrors(error)
+        }));
+        dispatch(
+            (
+                () => {
+                    return {
+                        type: REMOVE_SELECTED_CLIENT_ERROR,
+                        error
+                    };
+                }
+            )()
+        );
+    });
+};
+
+export const removeSelectedPolicy = () => {
+        return {
+            type: REMOVE_SELECTED_POLICY
+        }
+};
+
+export const selectedPolicyHasBeenRemoved = () => (dispatch) => {
+    dispatch(showGrowlPolicyHasBeenRemovedWithSuccess());
     return {
-        type: SELECTED_CLIENT_HAS_BEEN_REMOVED
+        type: SELECTED_POLICY_HAS_BEEN_REMOVED
     }
 };
 
-export const startRemoveSelectedClient = (client) => (dispatch) => {
-        dispatch(removeSelectedClient);
-        console.log('client',client);
-        return requests.delete(`/clients/${client.id}`,true).then(
-            response => {
-                dispatch(selectedClientHasBeenRemoved);
-            }
-        ).catch( err => console.log(err));
+export const removingPolicyError = (error) => (dispatch) => {
+    dispatch(showGrowlPolicyHasNotBeenRemoved(parseApiOperationErrors(error)));
+};
 
+
+export const showGrowlPolicyHasBeenRemovedWithSuccess = () => (dispatch) =>{
+    dispatch(showGrowl({ life: 2000, severity: 'success', summary: 'Policy has been removed with success', detail: '' }));
+    return {
+        type: SHOWING_GROWL_HAS_BEEN_REMOVED
+    }
+};
+
+export const showGrowlPolicyHasNotBeenRemoved = (error) => (dispatch) =>{
+    dispatch(showGrowl({ life: 2000, severity: 'error', summary: 'Policy has not been removed', detail: error }));
+    return {
+        type: SHOWING_GROWL_HAS_NOT_BEEN_REMOVED
+    }
+};
+
+
+export const startRemoveSelectedPolicy = (policy) => (dispatch) => {
+    dispatch(removeSelectedPolicy());
+    return requests.delete(`/policies/${apiObjectId(policy)}`,true).then(
+        response => {
+            dispatch(selectedPolicyHasBeenRemoved());
+        }
+    ).catch( (err) => {
+           dispatch(removingPolicyError(err));
+    });
 };

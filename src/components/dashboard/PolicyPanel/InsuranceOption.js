@@ -8,7 +8,7 @@ class InsuranceOption extends Component {
             <div>
                 { clientInsuranceValue.insuranceType === insuranceType["@id"] &&
                 clientInsuranceValue.insuranceCategory === insuranceCategory["@id"] ?
-                    (<div> <i className="pi pi-check" /> {clientInsuranceValue.value} $</div>) : ""  }
+                    (<div> <i className="pi pi-check" /> <strong>{clientInsuranceValue.value} $ </strong></div>) : ""  }
             </div>
         );
     }

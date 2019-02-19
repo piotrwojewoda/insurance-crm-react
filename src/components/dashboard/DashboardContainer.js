@@ -3,7 +3,6 @@ import {connect} from "react-redux";
 import {navChangePage} from "../../actions/actions";
 import Policies from "./policies";
 import Clients from "./clients";
-import {Growl} from 'primereact/growl';
 import './dashboard.css';
 import {
     dashboardLoadPolicies, dashboardSelectClient,
@@ -11,8 +10,6 @@ import {
     dashboardSetPoliciesFirstPage
 } from "../../actions/actionsDashboard";
 import RightpanelContainer from "./rightpanelContainer";
-
-
 
 const mapStateToProps = state => ({
     ...state.dashboard,
@@ -40,7 +37,6 @@ class DashboardContainer extends Component {
     render() {
 
         const {dashboardLoadPolicies,dashboardSelectPolicy,dashboardSelectClient ,selectedClient ,clients} =  this.props;
-
         return (
                 <div className="row mt-2">
                     <div className="col-md-4">

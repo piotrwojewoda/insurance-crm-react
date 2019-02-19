@@ -7,11 +7,12 @@ import {Dialog} from "primereact/dialog";
 import NewPolicyDialog from "./NewPolicyDialog/NewPolicyDialog";
 import NewClientDialog from "./NewClientDialog/NewClientDialog";
 import {connect} from "react-redux";
-import {Growl} from 'primereact/growl';
+
 
 import {
     startRemoveSelectedClient,
-    dashboardSelectPolicy
+    dashboardSelectPolicy,
+    startRemoveSelectedPolicy, dashboardLoadPolicies
 } from "../../actions/actionsDashboard";
 
 const mapStateToProps = state => ({
@@ -20,7 +21,9 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = {
     startRemoveSelectedClient,
-    dashboardSelectPolicy
+    startRemoveSelectedPolicy,
+    dashboardSelectPolicy,
+    dashboardLoadPolicies
 };
 class RightpanelContainer extends Component { // TODO split component to smaller components
 
@@ -35,7 +38,8 @@ class RightpanelContainer extends Component { // TODO split component to smaller
     }
 
     onClickRemoveSelectedPolicy = (event)  => {
-
+        this.props.startRemoveSelectedPolicy(this.props.selectedPolicy);
+        this.props.dashboardLoadPolicies();
         this.setState({removePolicyDialogVisible: false});
     };
 
@@ -43,11 +47,10 @@ class RightpanelContainer extends Component { // TODO split component to smaller
         this.setState({removeClientDialogVisible: false});
     };
 
-    onClickRemoveSelectedClient = (event)  => {         // TODO handle if delete operation was failed;
+    onClickRemoveSelectedClient = (event)  => {         // TODO handle if delete operation was failed ( move growl triggering to redux ) ;
         this.props.startRemoveSelectedClient(this.props.selectedClient);
         this.props.dashboardSelectPolicy({ value: this.props.selectedPolicy });
         this.setState({removeClientDialogVisible: false});
-        this.growl.show({severity: 'success', summary: 'Client has been removed'});
     };
 
     onHideRemoveClientDialog = (event) => {
@@ -72,10 +75,9 @@ class RightpanelContainer extends Component { // TODO split component to smaller
 
         return (
             <div>
-                <Growl ref={(el) => this.growl = el}></Growl>
                 <Toolbar>
                     <div className="p-toolbar-group-right">
-                        <Button label="Add a newpolicy"
+                        <Button label="Add a new policy"
                                 icon="pi pi-plus"
                                 style={{marginRight: '.25em'}}
                                 onClick={() => this.setState({newPolicyDialogVisible: true})}
@@ -92,6 +94,7 @@ class RightpanelContainer extends Component { // TODO split component to smaller
                                 icon="pi pi-plus"
                                 style={{marginRight: '.25em'}}
                                 onClick={() => this.setState({newClientDialogVisible: true})}
+                                disabled={clientsLoading === true ? 'disabled' : ''}
                         /> )}
                         { selectedClient && (<Button label="Remove selected client"
                                 className="p-button-danger"
@@ -106,7 +109,7 @@ class RightpanelContainer extends Component { // TODO split component to smaller
                 <PolicyPanel/>
                 <Dialog header="Add a new policy"
                         visible={this.state.newPolicyDialogVisible}
-                        style={{width: '80vw'}}
+                        style={{width: '60vw'}}
                         modal={true}
                         onHide={() => this.setState({newPolicyDialogVisible: false})}
                 >

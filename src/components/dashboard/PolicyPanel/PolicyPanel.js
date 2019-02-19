@@ -24,7 +24,7 @@ class PolicyPanel extends Component {
                         top: '55%',
                         transform: 'translate(-50%, -50%)'
                     }} strokeWidth="5"  animationDuration=".8s"/>) }
-                <Panel header="Policy insurance details" className="mt-1 text-center policyPanelHeight">
+                <Panel header="Client insurance details" className="mt-1 text-center policyPanelHeight">
                     { selectedClient  && clientInsuranceValue  ? (
                         <InsuranceTable
                             insuranceTypes={insuranceTypes}

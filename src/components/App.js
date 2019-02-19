@@ -8,10 +8,14 @@ import {connect} from "react-redux";
 import LoginForm from "./LoginForm";
 import {withRouter} from "react-router-dom";
 import {requests} from "../agent";
+import { Growl } from 'primereact/components/growl/Growl';
 import {logout, userProfileFetch, userSetId, userSetToken} from "../actions/actions";
 import {insuranciesLoadCategories, insuranciesLoadTypes} from "../actions/actionsInsurancies";
 
-const mapStateToProps = state => ({...state.auth});
+const mapStateToProps = state => ({
+    ...state.auth,
+    growlmessages: state.growlmessages
+});
 
 const mapDispatchToProps = {
     userProfileFetch,
@@ -32,6 +36,15 @@ class App extends Component {
         }
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.growlmessages.messages) {
+            if (nextProps.growlmessages.messages.length > 0) {
+                this.growl.show(nextProps.growlmessages.messages);
+            }
+        }
+    }
+
+
     componentDidMount() {
         const userId = window.localStorage.getItem('userId');
         const token = window.localStorage.getItem('jwtToken');
@@ -48,6 +61,7 @@ class App extends Component {
         const {isAuthenticated, userData, logout} = this.props;
         return (
             <div className="container-fluid">
+                <Growl ref={(el) => { this.growl = el; }} />
                 <HeaderContainer isAuthenticated={isAuthenticated} logout={logout} userData={userData}/>
 
                 <Switch>

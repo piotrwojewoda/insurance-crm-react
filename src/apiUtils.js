@@ -8,7 +8,15 @@ export const parseApiErrors = (error) => {
         )
 };
 
+export const parseApiOperationErrors = (error) => {
 
+    return error.response.body.violations.reduce(
+        (parsedErrors,violation) => {
+            return violation['message'];
+        },
+        {}
+    )
+};
 
 export const hydraPageCount = (collection) => {
     if (!collection['hydra:view']) {
@@ -25,6 +33,12 @@ export const uriId = (uri) => {
         uri.value['@id'].match(/(\d+)/)[1]
     )
     };
+
+export const apiObjectId = (object) => {
+    return Number(
+        object['@id'].match(/(\d+)/)[1]
+    )
+};
 
 
 const canWriteBlogPostRoles = ['ROLE_WRITER', 'ROLE_ADMIN', 'ROLE_SUPERADMIN'];

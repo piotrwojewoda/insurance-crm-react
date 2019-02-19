@@ -8,7 +8,9 @@ import {
     DASHBOARD_LOAD_POLICY_ITEM_RECEIVED,
     DASHBOARD_LOAD_POLICY_ITEM_REQUEST,
     DASHBOARD_SELECT_POLICY,
-    DASHBOARD_SET_POLICIES_FIRST_PAGE, RESET_ALL_DATA, RESET_DASHBOARD_DATA
+    DASHBOARD_SET_POLICIES_FIRST_PAGE,
+    RESET_ALL_DATA,
+    RESET_DASHBOARD_DATA
 } from "../actions/constants";
 
 
@@ -81,7 +83,7 @@ export default (state =
                 ...state,
                 clientInsuranceValue: [],
                 policyInsuranceDetails: true
-            }
+            };
         case DASHBOARD_LOAD_CLIENT_RECEIVED:
             return {
                 ...state,

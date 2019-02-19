@@ -1,6 +1,6 @@
 import {
     NAV_CHANGE_PAGE, NAV_RESET_TAB,
-    NAV_TAB_CHANGE, RESET_DASHBOARD_DATA, SET_USER_TOKEN, USER_LOGIN_ERROR, USER_LOGIN_REQUEST,
+    NAV_TAB_CHANGE, RESET_DASHBOARD_DATA, SET_USER_TOKEN, SHOW_MESSAGE, USER_LOGIN_ERROR, USER_LOGIN_REQUEST,
     USER_LOGIN_SUCCESS,
     USER_LOGOUT,
     USER_PROFILE_ERROR,
@@ -133,3 +133,13 @@ export const userSetToken = (jwtToken) => {
         jwtToken
     }
 };
+
+export const showMessage = (message) => ({
+    type: SHOW_MESSAGE,
+    message: message
+});
+
+export function showGrowl(message) {
+    console.log(message);
+    return showMessage(message);
+}
