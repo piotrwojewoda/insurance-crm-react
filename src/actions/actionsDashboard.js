@@ -69,6 +69,10 @@ export const dashboardLoadPolicyItem = (id) => {
         return requests.get(`/policies/${id}`,true).then(
             response => dispatch(dashboardLoadPolicyItemReceived(response))
         ).catch(error => {
+
+            console.log('error',error);
+
+
             if (401 === error.response.status) {
                 dispatch(dashboardResetData());
                 dispatch(userLogout());

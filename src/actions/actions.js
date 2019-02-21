@@ -1,6 +1,13 @@
 import {
-    NAV_CHANGE_PAGE, NAV_RESET_TAB,
-    NAV_TAB_CHANGE, RESET_DASHBOARD_DATA, SET_USER_TOKEN, SHOW_MESSAGE, USER_LOGIN_ERROR, USER_LOGIN_REQUEST,
+    NAV_CHANGE_PAGE,
+    NAV_RESET_TAB,
+    NAV_TAB_CHANGE,
+    REMOVE_MESSAGE,
+    RESET_DASHBOARD_DATA,
+    SET_USER_TOKEN,
+    SHOW_MESSAGE,
+    USER_LOGIN_ERROR,
+    USER_LOGIN_REQUEST,
     USER_LOGIN_SUCCESS,
     USER_LOGOUT,
     USER_PROFILE_ERROR,
@@ -143,3 +150,7 @@ export function showGrowl(message) {
     console.log(message);
     return showMessage(message);
 }
+
+export const removeMessages = () => ({
+    type: REMOVE_MESSAGE,
+});

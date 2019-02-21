@@ -1,9 +1,32 @@
-import {GET_COMPANIES_RECEIVED, SET_COMPANY_VALUE} from "../actions/constants";
+import {
+    GET_COMPANIES_RECEIVED, RESET_NEW_POLICY_STATE,
+    SET_COMPANY_CODE, SET_COMPANY_ENDDATE,
+    SET_COMPANY_PERIOD,
+    SET_COMPANY_STARTDATE,
+    SET_COMPANY_VALUE,
+    SET_MAIN_CLIENT_FIRSTNAME,
+    SET_MAIN_CLIENT_LASTNAME,
+    SET_MAIN_CLIENT_PESEL, SET_NEW_POLICY_SELECTED_VALUE
+} from "../actions/constants";
+import {setMainClientFirstname} from "../actions/actionsNewPolicy";
+
+const tempDate = new Date();
+
+const initialState = { companyValue: null,
+    suggestedCompanies: null,
+    companyCode: '',
+    companyPeriod: '',
+    startDate: new Date(),
+    endDate: new Date(tempDate.getFullYear() + 1, tempDate.getMonth(), tempDate.getDate()),
+    mainClientFirstname: '',
+    mainClientLirstname: '',
+    mainClientPesel: '',
+    selectedValue: null
+};
 
 export const newPolicy = (state =
                     {
-                        companyValue: null,
-                        suggestedCompanies: null
+                        ...initialState
                     },
                 action) => {
 
@@ -12,9 +35,6 @@ export const newPolicy = (state =
         case GET_COMPANIES_RECEIVED:
             return {
               ...state,
-                // suggestedCompanies: action.companies.map( (el) => {
-                //     return { name: el['name'], id: el['id'] }
-                // } )
                 suggestedCompanies: action.companies
             };
         case SET_COMPANY_VALUE:
@@ -22,6 +42,52 @@ export const newPolicy = (state =
                 ...state,
                 companyValue: action.companyValue
             };
+        case SET_COMPANY_CODE:
+            return {
+                ...state,
+                companyCode: action.companyCode
+            };
+        case SET_COMPANY_PERIOD:
+            return {
+                ...state,
+                companyPeriod: action.companyPeriod
+            };
+        case SET_COMPANY_STARTDATE:
+            return {
+                ...state,
+                startDate: action.startDate
+            };
+        case SET_COMPANY_ENDDATE:
+            return {
+                ...state,
+                endDate: action.endDate
+            };
+        case SET_MAIN_CLIENT_LASTNAME:
+            return {
+                ...state,
+                mainClientLastname: action.mainClientLastname
+            };
+        case SET_MAIN_CLIENT_FIRSTNAME:
+            return {
+                ...state,
+                mainClientFirstname: action.mainClientFirstname
+            };
+        case SET_MAIN_CLIENT_PESEL:
+            return {
+                ...state,
+                mainClientPesel: action.mainClientPesel
+            };
+        case SET_NEW_POLICY_SELECTED_VALUE:
+            return {
+                ...state,
+                selectedValue: action.selectedValue[0]
+            };
+
+        case RESET_NEW_POLICY_STATE:
+            return {
+                ...state,
+                ...initialState
+            }
 
         default:
             return state;

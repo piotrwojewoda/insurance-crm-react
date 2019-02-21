@@ -14,6 +14,7 @@ import {
     dashboardSelectPolicy,
     startRemoveSelectedPolicy, dashboardLoadPolicies
 } from "../../actions/actionsDashboard";
+import {resetNewPolicyState} from "../../actions/actionsNewPolicy";
 
 const mapStateToProps = state => ({
     ...state.dashboard,
@@ -23,7 +24,8 @@ const mapDispatchToProps = {
     startRemoveSelectedClient,
     startRemoveSelectedPolicy,
     dashboardSelectPolicy,
-    dashboardLoadPolicies
+    dashboardLoadPolicies,
+    resetNewPolicyState
 };
 class RightpanelContainer extends Component { // TODO split component to smaller components
 
@@ -47,7 +49,7 @@ class RightpanelContainer extends Component { // TODO split component to smaller
         this.setState({removeClientDialogVisible: false});
     };
 
-    onClickRemoveSelectedClient = (event)  => {         // TODO handle if delete operation was failed ( move growl triggering to redux ) ;
+    onClickRemoveSelectedClient = (event)  => {
         this.props.startRemoveSelectedClient(this.props.selectedClient);
         this.props.dashboardSelectPolicy({ value: this.props.selectedPolicy });
         this.setState({removeClientDialogVisible: false});
@@ -56,6 +58,11 @@ class RightpanelContainer extends Component { // TODO split component to smaller
     onHideRemoveClientDialog = (event) => {
         this.setState({removeClientDialogVisible: false});
     };
+
+    onHideNewPolicyDialog = (event) => {
+        this.setState({newPolicyDialogVisible: false});
+    }
+
 
     render() {
         const removeClientFooter = (
@@ -71,7 +78,7 @@ class RightpanelContainer extends Component { // TODO split component to smaller
             </div>
         );
 
-        const { selectedPolicy, selectedClient, clientsLoading, policyInsuranceDetails} = this.props;
+        const { selectedPolicy, selectedClient, clientsLoading, policyInsuranceDetails,resetNewPolicyState} = this.props;
 
         return (
             <div>
@@ -80,7 +87,10 @@ class RightpanelContainer extends Component { // TODO split component to smaller
                         <Button label="Add a new policy"
                                 icon="pi pi-plus"
                                 style={{marginRight: '.25em'}}
-                                onClick={() => this.setState({newPolicyDialogVisible: true})}
+                                onClick={() => {
+                                    resetNewPolicyState();
+                                    this.setState({newPolicyDialogVisible: true})
+                                }}
                         />
                         { selectedPolicy && (<Button label="Remove selected policy"
                                 className="p-button-danger"
@@ -102,7 +112,7 @@ class RightpanelContainer extends Component { // TODO split component to smaller
                                 style={{marginRight: '.25em'}}
                                 onClick={() => this.setState({removeClientDialogVisible: true})}
                                                      disabled={policyInsuranceDetails === true ? 'disabled' : ''}
-                        />) }
+                        />)}
                     </div>
                 </Toolbar>
                 <CompanyPanel/>
@@ -113,7 +123,7 @@ class RightpanelContainer extends Component { // TODO split component to smaller
                         modal={true}
                         onHide={() => this.setState({newPolicyDialogVisible: false})}
                 >
-                   <NewPolicyDialog/>
+                   <NewPolicyDialog onHideNewPolicyDialog={this.onHideNewPolicyDialog}/>
                 </Dialog>
 
                 <Dialog header="Add a new client"
@@ -143,8 +153,6 @@ class RightpanelContainer extends Component { // TODO split component to smaller
                 >
                     Are you sure you want to remove selected Policy?
                 </Dialog>
-
-
             </div>
         );
     }

@@ -2,7 +2,7 @@ import 'moment-timezone';
 import {
     GET_INSURANCE_CATEGORIES,
     GET_INSURANCE_CATEGORIES_RECEIVED,
-    GET_INSURANCE_TYPES_RECEIVED
+    GET_INSURANCE_TYPES_RECEIVED, GET_INSURANCE_VALUES_RECEIVED
 } from "../actions/constants";
 import {GET_INSURANCE_VALUES} from "../actions/constants";
 
@@ -28,6 +28,11 @@ export default (state =
             return {
                 ...state,
                 insuranceCategories: action.data['hydra:member']
+            };
+        case GET_INSURANCE_VALUES_RECEIVED:
+            return {
+                ...state,
+                insuranceValues: action.data['hydra:member']
             };
         case GET_INSURANCE_VALUES:
             return {
