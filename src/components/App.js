@@ -11,6 +11,9 @@ import {requests} from "../agent";
 import { Growl } from 'primereact/components/growl/Growl';
 import {logout, removeMessages, userProfileFetch, userSetId, userSetToken} from "../actions/actions";
 import {insurancesLoadValues, insuranciesLoadCategories, insuranciesLoadTypes} from "../actions/actionsInsurancies";
+import InsuranceValuesContainer from "./insuranceValues/InsuranceValuesContainer";
+import CompaniesContainer from "./companies/CompaniesContainer";
+import ClientsContainer from "./clients/ClientsContainer";
 
 const mapStateToProps = state => ({
     ...state.auth,
@@ -71,6 +74,9 @@ class App extends Component {
                 <Switch>
                     <Route path="/login" component={withRouter(LoginForm)}/>
                     <Route path="/policies" component={PoliciesContainer}/>
+                    <Route path="/insurance-values" component={InsuranceValuesContainer} />
+                    <Route path="/companies" component={CompaniesContainer} />
+                    <Route path="/clients" component={ClientsContainer} />
                     <Route path="/" component={DashboardContainer}/>
                 </Switch>
             </div>

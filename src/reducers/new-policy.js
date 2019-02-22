@@ -1,14 +1,18 @@
 import {
-    GET_COMPANIES_RECEIVED, RESET_NEW_POLICY_STATE,
-    SET_COMPANY_CODE, SET_COMPANY_ENDDATE,
+    ADD_ERRORS_TO_NEW_POLICY_DIALOG,
+    GET_COMPANIES_RECEIVED,
+    RESET_NEW_POLICY_STATE,
+    SET_COMPANY_CODE,
+    SET_COMPANY_ENDDATE,
     SET_COMPANY_PERIOD,
     SET_COMPANY_STARTDATE,
     SET_COMPANY_VALUE,
     SET_MAIN_CLIENT_FIRSTNAME,
     SET_MAIN_CLIENT_LASTNAME,
-    SET_MAIN_CLIENT_PESEL, SET_NEW_POLICY_SELECTED_VALUE
+    SET_MAIN_CLIENT_PESEL,
+    SET_NEW_POLICY_SELECTED_VALUE,
+    SETTING_VISIBILITY_POLICY_DIALOG
 } from "../actions/constants";
-import {setMainClientFirstname} from "../actions/actionsNewPolicy";
 
 const tempDate = new Date();
 
@@ -19,9 +23,11 @@ const initialState = { companyValue: null,
     startDate: new Date(),
     endDate: new Date(tempDate.getFullYear() + 1, tempDate.getMonth(), tempDate.getDate()),
     mainClientFirstname: '',
-    mainClientLirstname: '',
+    mainClientLastname: '',
     mainClientPesel: '',
-    selectedValue: null
+    selectedValue: null,
+    errors: [],
+    visibleNewPolicyDialog: false
 };
 
 export const newPolicy = (state =
@@ -82,12 +88,22 @@ export const newPolicy = (state =
                 ...state,
                 selectedValue: action.selectedValue[0]
             };
+        case ADD_ERRORS_TO_NEW_POLICY_DIALOG:
+            return {
+                ...state,
+                errors: action.errors
+            };
 
         case RESET_NEW_POLICY_STATE:
             return {
                 ...state,
                 ...initialState
-            }
+            };
+        case SETTING_VISIBILITY_POLICY_DIALOG:
+            return {
+                ...state,
+                visibleNewPolicyDialog: action.value
+            };
 
         default:
             return state;

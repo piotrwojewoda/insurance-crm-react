@@ -3,7 +3,6 @@ import {DataTable} from 'primereact/datatable';
 import {Column} from "primereact/column";
 import {ProgressSpinner} from "primereact/progressspinner";
 
-
 class Policies extends Component {
 
     constructor(props) {
@@ -46,7 +45,6 @@ class Policies extends Component {
                            paginator={true}
                            onSelectionChange={e => onSelectPolicy(e)}
                            onPage={this.onPage}
-
                 >
                     <Column field="code" header="Code"/>
                     <Column field="startdate" header="Start Date"/>

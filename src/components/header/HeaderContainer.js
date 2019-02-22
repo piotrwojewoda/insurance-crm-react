@@ -5,12 +5,12 @@ import {connect} from "react-redux";
 
 const mapDispatchToProps = {
     navResetTab
-}
+};
 
 class HeaderContainer extends Component {
+
     render() {
         const {isAuthenticated, logout} = this.props;
-
         return (
             <div>
                 <nav className="navbar navbar-expand-lg navbar-light bg-light">

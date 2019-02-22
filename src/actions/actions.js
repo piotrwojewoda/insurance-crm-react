@@ -147,7 +147,6 @@ export const showMessage = (message) => ({
 });
 
 export function showGrowl(message) {
-    console.log(message);
     return showMessage(message);
 }
 

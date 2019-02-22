@@ -10,7 +10,7 @@ const mapDispatchToProps = {
     navChangePage
 };
 
-class PoliciesContainer extends Component {
+class ClientsContainer extends Component {
 
     componentDidMount() {
         if (!this.props.isAuthenticated && this.props.token) {
@@ -22,11 +22,11 @@ class PoliciesContainer extends Component {
         return (
             <div>
                 <div className="d-flex flex-row justify-content-center align-items-center" style={{height: '25em'}}>
-                    <h1>Policies tab will be available soon :) </h1>
+                    <h1>Clients tab will be available soon :) </h1>
                 </div>
             </div>
         );
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(PoliciesContainer);
+export default connect(mapStateToProps,mapDispatchToProps)(ClientsContainer);

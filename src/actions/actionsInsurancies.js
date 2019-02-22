@@ -3,7 +3,9 @@ import {
     GET_INSURANCE_CATEGORIES_RECEIVED,
     GET_INSURANCE_CATEGORIES_REQUEST,
     GET_INSURANCE_TYPES_RECEIVED,
-    GET_INSURANCE_TYPES_REQUEST, GET_INSURANCE_VALUES_RECEIVED, GET_INSURANCE_VALUES_REQUEST
+    GET_INSURANCE_TYPES_REQUEST,
+    GET_INSURANCE_VALUES_RECEIVED,
+    GET_INSURANCE_VALUES_REQUEST
 } from "./constants";
 
 export const insuranciesLoadTypesRequest = () => {
@@ -28,7 +30,6 @@ export const insuranciesLoadTypes = () => {
     }
 };
 
-
 export const insuranciesLoadCategoriesRequest = () => {
     return {
         type: GET_INSURANCE_CATEGORIES_REQUEST
@@ -51,8 +52,6 @@ export const insuranciesLoadCategories = () => {
     }
 };
 
-
-
 export const insuranciesValuesRequest = () => {
     return {
         type: GET_INSURANCE_VALUES_REQUEST
@@ -66,9 +65,6 @@ export const insuranciesValuesReceived = (data) => {
     }
 };
 
-
-
-
 export const insurancesLoadValues = () => {
     return (dispatch) => {
         dispatch(insuranciesValuesRequest());
@@ -77,4 +73,4 @@ export const insurancesLoadValues = () => {
         ).catch(error => console.log(error));
     }
 
-}
+};

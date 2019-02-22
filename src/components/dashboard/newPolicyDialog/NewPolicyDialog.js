@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import {AutoComplete} from 'primereact/autocomplete';
-import {newPolicy} from "../../../reducers/new-policy";
 import {connect} from "react-redux";
 import {
+    addErrorsToNewPolicyDialog,
     addNewPolicy,
     getCompanies,
     setCompanyCode,
@@ -21,12 +21,14 @@ import {Calendar} from "primereact/calendar";
 import {ListBox} from 'primereact/listbox';
 import './newPolicyDialogStyle.css';
 import {Button} from "primereact/button";
-import InsuranceSelector from "../InsuranceSelector/InsuranceSelector";
+import InsuranceSelector from "../insuranceSelector/InsuranceSelector";
 import {dashboardLoadPolicies, dashboardSetPoliciesFirstPage} from "../../../actions/actionsDashboard";
+import ErrorComponent from "../ErrorComponent";
 
 const mapStateToProps = state => ({
     ...state.newPolicy,
-    insurance: state.insurance
+    insurance: state.insurance,
+    dashboard: state.dashboard
 });
 
 const mapDispatchToProps = {
@@ -42,26 +44,25 @@ const mapDispatchToProps = {
     addNewPolicy,
     setNewPolicySelectedValue,
     dashboardSetPoliciesFirstPage,
-    dashboardLoadPolicies
+    dashboardLoadPolicies,
+    addErrorsToNewPolicyDialog,
 };
 
 class NewPolicyDialog extends Component {
 
     handleSubmit = event => {
-                this.props.addNewPolicy(
-                this.props.companyCode,
-                this.props.startDate,
-                this.props.endDate,
-                this.props.companyPeriod,
-                this.props.companyValue.id,
-                this.props.mainClientFirstname,
-                this.props.mainClientLastname,
-                this.props.mainClientPesel,
-                this.props.selectedValue.id);
-
-                this.props.onHideNewPolicyDialog();
-                this.props.dashboardLoadPolicies(101);
-                this.props.dashboardSetPoliciesFirstPage(1000)
+        this.props.addErrorsToNewPolicyDialog([]);
+        this.props.addNewPolicy(
+            this.props.companyCode,
+            this.props.startDate,
+            this.props.endDate,
+            this.props.companyPeriod,
+            this.props.companyValue.id,
+            this.props.mainClientFirstname,
+            this.props.mainClientLastname,
+            this.props.mainClientPesel,
+            this.props.selectedValue.id,
+            this.props.dashboard.policiesAmount);
         event.preventDefault();
     };
 
@@ -86,7 +87,8 @@ class NewPolicyDialog extends Component {
             setMainClientLastname,
             setMainClientPesel,
             setNewPolicySelectedValue,
-            selectedValue
+            selectedValue,
+            errors
         } = this.props;
 
 
@@ -95,6 +97,7 @@ class NewPolicyDialog extends Component {
             insuranceTypes,
             insuranceValues
         } = this.props.insurance;
+
         const period = [
             {label: 'month', value: 'month'},
             {label: 'quarter', value: 'quarter'},
@@ -102,13 +105,9 @@ class NewPolicyDialog extends Component {
 
         const formIsNotCompleted = ((typeof companyValue !== "object") || (companyValue === null))
             || !companyPeriod
-            || !companyCode
+            || !selectedValue
             || !(startDate instanceof Date)
             || !(endDate instanceof Date)
-            || !mainClientFirstname
-            || !mainClientLastname
-            || !mainClientPesel
-            || !selectedValue
         ;
 
         return (
@@ -151,6 +150,7 @@ class NewPolicyDialog extends Component {
                                     setCompanyCode(e.target.value)
                                 }}/>
                         </span>
+                                <ErrorComponent error={errors.code}/>
                             </td>
                         </tr>
                         <tr>
@@ -164,8 +164,8 @@ class NewPolicyDialog extends Component {
                                     value={companyPeriod}
                                     options={period}
                                     onChange={(e) => {
-                                    setCompanyPeriod(e.value)
-                                }}
+                                        setCompanyPeriod(e.value)
+                                    }}
                                 />
                             </td>
                         </tr>
@@ -183,6 +183,7 @@ class NewPolicyDialog extends Component {
                                           }}
                                           style={{width: '100%'}}
                                 ></Calendar>
+                                <ErrorComponent error={errors.startDate}/>
                             </td>
                         </tr>
                         <tr>
@@ -200,6 +201,7 @@ class NewPolicyDialog extends Component {
                                           style={{width: '100%'}}
 
                                 ></Calendar>
+                                <ErrorComponent error={errors.endDate}/>
                             </td>
                         </tr>
                         <tr>
@@ -209,14 +211,15 @@ class NewPolicyDialog extends Component {
                             <td>
                                 <div className="row">
                                     <div className="col-sm">
-                                <InputText
-                                    type="text"
-                                    size="30"
-                                    value={mainClientFirstname}
-                                    tooltip="Firstname"
-                                    onChange={(e) => {
-                                            setMainClientFirstname(e.target.value);
-                                    }}/>
+                                        <InputText
+                                            type="text"
+                                            size="30"
+                                            value={mainClientFirstname}
+                                            tooltip="Firstname"
+                                            onChange={(e) => {
+                                                setMainClientFirstname(e.target.value);
+                                            }}/>
+                                        <ErrorComponent error={errors.clientFirstName}/>
                                     </div>
                                     <div className="col-sm">
                                         <InputText
@@ -227,6 +230,7 @@ class NewPolicyDialog extends Component {
                                             onChange={(e) => {
                                                 setMainClientLastname(e.target.value);
                                             }}/>
+                                        <ErrorComponent error={errors.clientLastName}/>
                                     </div>
                                 </div>
                             </td>
@@ -244,7 +248,9 @@ class NewPolicyDialog extends Component {
                                     onChange={(e) => {
                                         setMainClientPesel(e.target.value);
                                     }}/>
+                                <ErrorComponent error={errors.pesel}/>
                             </td>
+
                         </tr>
                         <tr>
                             <td colSpan={2}>
@@ -268,7 +274,7 @@ class NewPolicyDialog extends Component {
                                 />
                                 {formIsNotCompleted &&
                                 <div style={{color: 'red'}}
-                                      className="d-flex justify-content-center align-items-center">
+                                     className="d-flex justify-content-center align-items-center">
                                     Please complete all fields
                                 </div>}
                             </td>

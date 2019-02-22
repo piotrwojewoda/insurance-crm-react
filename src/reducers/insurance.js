@@ -2,7 +2,8 @@ import 'moment-timezone';
 import {
     GET_INSURANCE_CATEGORIES,
     GET_INSURANCE_CATEGORIES_RECEIVED,
-    GET_INSURANCE_TYPES_RECEIVED, GET_INSURANCE_VALUES_RECEIVED
+    GET_INSURANCE_TYPES_RECEIVED,
+    GET_INSURANCE_VALUES_RECEIVED
 } from "../actions/constants";
 import {GET_INSURANCE_VALUES} from "../actions/constants";
 

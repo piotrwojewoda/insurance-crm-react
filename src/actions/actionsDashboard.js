@@ -8,13 +8,17 @@ import {
     DASHBOARD_SELECT_CLIENT,
     DASHBOARD_SELECT_POLICY,
     DASHBOARD_SET_POLICIES_FIRST_PAGE,
-    REMOVE_SELECTED_CLIENT, REMOVE_SELECTED_CLIENT_ERROR, REMOVE_SELECTED_POLICY, REMOVING_POLICY_ERROR,
+    REMOVE_SELECTED_CLIENT,
+    REMOVE_SELECTED_CLIENT_ERROR,
+    REMOVE_SELECTED_POLICY,
     RESET_DASHBOARD_DATA,
     SELECTED_CLIENT_HAS_BEEN_REMOVED,
-    SELECTED_POLICY_HAS_BEEN_REMOVED, SHOWING_GROWL_HAS_BEEN_REMOVED, SHOWING_GROWL_HAS_NOT_BEEN_REMOVED
+    SELECTED_POLICY_HAS_BEEN_REMOVED,
+    SHOWING_GROWL_HAS_BEEN_REMOVED,
+    SHOWING_GROWL_HAS_NOT_BEEN_REMOVED
 } from "./constants";
 import {requests} from "../agent";
-import {apiObjectId, parseApiErrors, parseApiOperationErrors, uriId} from "../apiUtils";
+import {apiObjectId, parseApiOperationErrors, uriId} from "../apiUtils";
 import {navChangePage, showGrowl, userLogout} from "./actions";
 
 export const dashboardPoliciesRequest = () => {
@@ -48,10 +52,6 @@ export const dashboardLoadPolicies = (page = 1) => {      // wykonuje reπuest p
 };
 
 export const dashboardSelectPolicy = (policy) => (dispatch) => {
-
-
-    console.log('policy!!!',policy);
-
    dispatch(dashboardPutPolicyAsSelected(policy));
    dispatch(dashboardLoadPolicyItem(uriId(policy)));
 };
@@ -69,10 +69,6 @@ export const dashboardLoadPolicyItem = (id) => {
         return requests.get(`/policies/${id}`,true).then(
             response => dispatch(dashboardLoadPolicyItemReceived(response))
         ).catch(error => {
-
-            console.log('error',error);
-
-
             if (401 === error.response.status) {
                 dispatch(dashboardResetData());
                 dispatch(userLogout());
@@ -155,7 +151,6 @@ export const removeSelectedClient = () => {
 
 export const startRemoveSelectedClient = (client) => (dispatch) => {
     dispatch(removeSelectedClient());
-    console.log('client', client);
     return requests.delete(`/clients/${client.id}`, true).then(
         response => {
             dispatch(showGrowl({

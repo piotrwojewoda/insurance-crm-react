@@ -54,6 +54,9 @@ class LoginForm extends Component {
         <Field name="username" label="Username"  type="text" component={renderField} />
         <Field name="password" label="Password" type="password" component={renderField} />
         <button type="submit" className="btn btn-primary btn-big btn-block" disabled={spinner}>Log In</button>
+            <div className="mt-5"><strong>Login data:</strong></div>
+            <div className="mt-5">Username: <strong> admin </strong></div>
+            <div className="mt-1">Password: <strong> Admin123!@# </strong></div>
         </form>
                             </div>
                         </div>

@@ -46,7 +46,8 @@ class CompanyPanel extends Component {
                         </div>
                     </div>
                 </Panel>
-                <Dialog header="Company details" visible={this.state.companyDetailsDialogVisible} style={{width: '70vw'}} modal={true}
+                <Dialog header="Company details" visible={this.state.companyDetailsDialogVisible}
+                        style={{width: '70vw'}} modal={true}
                         onHide={(e) => this.setState({companyDetailsDialogVisible: false})}>
                     <ul className="list-group">
                         <li className="list-group-item"><strong>Company name:</strong> {company.name} </li>
@@ -58,7 +59,6 @@ class CompanyPanel extends Component {
                         <li className="list-group-item"><strong>City:</strong> {company.city.name}</li>
                     </ul>
                 </Dialog>
-
             </div>
         );
     }
