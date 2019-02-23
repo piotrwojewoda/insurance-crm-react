@@ -20,6 +20,7 @@ import {
 import {requests} from "../agent";
 import {apiObjectId, parseApiOperationErrors, uriId} from "../apiUtils";
 import {navChangePage, showGrowl, userLogout} from "./actions";
+import {addNewPolicyReceived} from "./actionsNewPolicy";
 
 export const dashboardPoliciesRequest = () => {
     return {
@@ -149,10 +150,10 @@ export const removeSelectedClient = () => {
 };
 
 
-export const startRemoveSelectedClient = (client) => (dispatch) => {
+export const startRemoveSelectedClient = (client,selectedPolicy) => (dispatch) => {
     dispatch(removeSelectedClient());
     return requests.delete(`/clients/${client.id}`, true).then(
-        response => {
+        () => {
             dispatch(showGrowl({
                 life: 2000,
                 severity: 'success',
@@ -168,6 +169,7 @@ export const startRemoveSelectedClient = (client) => (dispatch) => {
                     }
                 )()
             );
+            dispatch(dashboardSelectPolicy(selectedPolicy));
         }
     ).catch((error) => {
         dispatch(showGrowl({
@@ -206,7 +208,6 @@ export const removingPolicyError = (error) => (dispatch) => {
     dispatch(showGrowlPolicyHasNotBeenRemoved(parseApiOperationErrors(error)));
 };
 
-
 export const showGrowlPolicyHasBeenRemovedWithSuccess = () => (dispatch) =>{
     dispatch(showGrowl({ life: 2000, severity: 'success', summary: 'Policy has been removed with success', detail: '' }));
     return {
@@ -221,12 +222,16 @@ export const showGrowlPolicyHasNotBeenRemoved = (error) => (dispatch) =>{
     }
 };
 
-
-export const startRemoveSelectedPolicy = (policy) => (dispatch) => {
+export const startRemoveSelectedPolicy = (policy, policiesFirstPage) => (dispatch) => {
     dispatch(removeSelectedPolicy());
     return requests.delete(`/policies/${apiObjectId(policy)}`,true).then(
         response => {
+           let page = Math.floor(policiesFirstPage/10);
+           page === 0 ? page = 1 : page++;
+            dispatch(addNewPolicyReceived(response));
             dispatch(selectedPolicyHasBeenRemoved());
+            dispatch(dashboardLoadPolicies(page));
+            dispatch(dashboardSetPoliciesFirstPage(policiesFirstPage));
         }
     ).catch( (err) => {
            dispatch(removingPolicyError(err));

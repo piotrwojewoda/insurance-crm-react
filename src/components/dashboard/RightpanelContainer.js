@@ -46,8 +46,7 @@ class RightpanelContainer extends Component { // TODO split component to smaller
     }
 
     onClickRemoveSelectedPolicy = () => {
-        this.props.startRemoveSelectedPolicy(this.props.selectedPolicy);
-        this.props.dashboardLoadPolicies();
+        this.props.startRemoveSelectedPolicy(this.props.selectedPolicy,this.props.policiesFirstPage);
         this.setState({removePolicyDialogVisible: false});
     };
 
@@ -56,8 +55,7 @@ class RightpanelContainer extends Component { // TODO split component to smaller
     };
 
     onClickRemoveSelectedClient = () => {
-        this.props.startRemoveSelectedClient(this.props.selectedClient);
-        this.props.dashboardSelectPolicy({value: this.props.selectedPolicy});
+        this.props.startRemoveSelectedClient(this.props.selectedClient , {value: this.props.selectedPolicy} );
         this.setState({removeClientDialogVisible: false});
     };
 

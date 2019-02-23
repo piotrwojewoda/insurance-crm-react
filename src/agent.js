@@ -3,7 +3,8 @@ import _superagent from 'superagent';
 
 const superagent = superagentPromise(_superagent, global.Promise);
 
-export const APPLICATION_PATH = `http://localhost:8000`;
+export const APPLICATION_PATH = `http://pw85.pl/insuranceapi/public/index.php`;
+
 const API_ROOT = `${APPLICATION_PATH}/api`;
 
 const responseBody = response => response.body;
@@ -25,10 +26,6 @@ export const requests = {
         },
         post: (url, body = null, secured = true) => {
             return superagent.post(`${API_ROOT}${url}`, body).use(tokenPlugin(secured)).then(responseBody)
-        },
-
-        upload: (url, file, secured = true) => {
-            return superagent.post(`${API_ROOT}${url}`).attach('file',file).use(tokenPlugin(secured)).then(responseBody)
         },
 
         delete: (url, secured = true) => {

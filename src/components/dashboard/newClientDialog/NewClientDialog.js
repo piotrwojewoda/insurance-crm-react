@@ -59,7 +59,6 @@ class NewClientDialog extends Component {
 
         return (
             <div>
-                {console.log('selectedValue', this.props)}
                 <form onSubmit={this.handleSubmit}>
                     <table className="table table-striped">
                         <tbody>
