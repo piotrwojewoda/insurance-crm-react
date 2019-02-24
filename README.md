@@ -1,4 +1,5 @@
-# This is a simple react demo application based on primeReact components and shows possibilities of connecting react, redux and Symfony API Platform
+# React InsuranceCRM demo Application
+This is a simple react demo application based on primeReact components and shows possibilities of connecting react, redux and Symfony API Platform
 
 ## Live demo APP:
 [ -> click here <-](http://pw85.pl/insurancecrm)
