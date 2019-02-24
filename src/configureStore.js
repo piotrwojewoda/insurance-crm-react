@@ -7,7 +7,7 @@ import createRootReducer from './reducer'
 import {tokenMiddleware} from "./middleware";
 import thunkMiddleware from 'redux-thunk';
 
-export const history = createBrowserHistory()
+export const history = createBrowserHistory({ basename: '/insurancecrm' });
 
 export default function configureStore(preloadedState) {
     const store = createStore(
@@ -19,9 +19,9 @@ export default function configureStore(preloadedState) {
                 thunkMiddleware,
                 tokenMiddleware
             ),
-        window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+       // window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
         ),
-    )
+    );
 
-    return store
+    return store;
 }

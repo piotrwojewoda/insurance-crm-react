@@ -1,12 +1,12 @@
 {
   "name": "insurancecrm",
   "version": "0.1.0",
+  "homepage": "http://pw85.pl/insurancecrm/",
   "private": true,
   "dependencies": {
     "classnames": "^2.2.5",
     "connected-react-router": "^6.2.2",
     "history": "^4.7.2",
-    "leaflet": "^1.4.0",
     "moment": "^2.24.0",
     "moment-timezone": "^0.5.23",
     "primeicons": "^1.0.0",

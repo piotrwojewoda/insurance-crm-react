@@ -51,7 +51,7 @@ class RightpanelContainer extends Component { // TODO split component to smaller
     };
 
     onHideRemovePolicyDialog = () => {
-        this.setState({removeClientDialogVisible: false});
+        this.setState({removePolicyDialogVisible: false});
     };
 
     onClickRemoveSelectedClient = () => {
