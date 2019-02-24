@@ -10,7 +10,7 @@ This is a simple react demo application based on primeReact components and shows
 2. run `npm install` or `yarn install`
 3. run `npm start` or `yarn start`
  
-## screens:
+## Screens:
 
 ![image](https://user-images.githubusercontent.com/39909775/53302060-87ea4480-385a-11e9-9cec-47023988bc6c.png)
 ![image](https://user-images.githubusercontent.com/39909775/53302095-e31c3700-385a-11e9-9f8f-bebf7010143a.png)
